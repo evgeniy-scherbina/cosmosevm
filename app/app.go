@@ -102,6 +102,9 @@ import (
 	monobankmodule "github.com/evgeniy-scherbina/cosmosevm/x/monobank"
 	monobankmodulekeeper "github.com/evgeniy-scherbina/cosmosevm/x/monobank/keeper"
 	monobankmoduletypes "github.com/evgeniy-scherbina/cosmosevm/x/monobank/types"
+	privatbankmodule "github.com/evgeniy-scherbina/cosmosevm/x/privatbank"
+	privatbankmodulekeeper "github.com/evgeniy-scherbina/cosmosevm/x/privatbank/keeper"
+	privatbankmoduletypes "github.com/evgeniy-scherbina/cosmosevm/x/privatbank/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -157,6 +160,7 @@ var (
 		vesting.AppModuleBasic{},
 		monitoringp.AppModuleBasic{},
 		monobankmodule.AppModuleBasic{},
+		privatbankmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -229,7 +233,8 @@ type App struct {
 	ScopedTransferKeeper   capabilitykeeper.ScopedKeeper
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 
-	MonobankKeeper monobankmodulekeeper.Keeper
+	MonobankKeeper   monobankmodulekeeper.Keeper
+	PrivatbankKeeper privatbankmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -266,7 +271,7 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
-		monobankmoduletypes.StoreKey,
+		monobankmoduletypes.StoreKey, privatbankmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -396,6 +401,13 @@ func New(
 	)
 	monobankModule := monobankmodule.NewAppModule(appCodec, app.MonobankKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.PrivatbankKeeper = *privatbankmodulekeeper.NewKeeper(
+		appCodec,
+		keys[privatbankmoduletypes.StoreKey],
+		keys[privatbankmoduletypes.MemStoreKey],
+	)
+	privatbankModule := privatbankmodule.NewAppModule(appCodec, app.PrivatbankKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -438,6 +450,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		monobankModule,
+		privatbankModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -466,6 +479,7 @@ func New(
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
 		monobankmoduletypes.ModuleName,
+		privatbankmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -490,6 +504,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
 		monobankmoduletypes.ModuleName,
+		privatbankmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -519,6 +534,7 @@ func New(
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
 		monobankmoduletypes.ModuleName,
+		privatbankmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -544,6 +560,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		monobankModule,
+		privatbankModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -734,6 +751,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(monobankmoduletypes.ModuleName)
+	paramsKeeper.Subspace(privatbankmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

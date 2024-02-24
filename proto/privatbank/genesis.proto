@@ -1,0 +1,8 @@
+syntax = "proto3";
+package evgeniyscherbina.cosmosevm.privatbank;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/evgeniy-scherbina/cosmosevm/x/privatbank/types";
+
+message GenesisState {}
