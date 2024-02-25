@@ -1,0 +1,6 @@
+syntax = "proto3";
+package evgeniyscherbina.cosmosevm.privatbank;
+
+option go_package = "github.com/evgeniy-scherbina/cosmosevm/x/privatbank/types";
+
+service Msg {}

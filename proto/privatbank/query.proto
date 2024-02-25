@@ -1,0 +1,10 @@
+syntax = "proto3";
+package evgeniyscherbina.cosmosevm.privatbank;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+
+option go_package = "github.com/evgeniy-scherbina/cosmosevm/x/privatbank/types";
+
+service Query {}
