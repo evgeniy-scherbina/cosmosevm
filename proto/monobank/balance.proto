@@ -1,0 +1,11 @@
+syntax = "proto3";
+package evgeniyscherbina.cosmosevm.monobank;
+
+option go_package = "github.com/evgeniy-scherbina/cosmosevm/x/monobank/types";
+
+message Balance {
+  string address = 1; 
+  uint64 balance = 2; 
+  
+}
+
