@@ -3,4 +3,14 @@ package evgeniyscherbina.cosmosevm.privatbank;
 
 option go_package = "github.com/evgeniy-scherbina/cosmosevm/x/privatbank/types";
 
-service Msg {}
+service Msg {
+  rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
+}
+
+message MsgDeposit {
+  string creator = 1;
+  uint64 amount = 2;
+}
+
+message MsgDepositResponse {
+}
