@@ -45034,6 +45034,8 @@ definitions:
       balance:
         type: string
         format: uint64
+  evgeniyscherbina.cosmosevm.monobank.MsgDepositResponse:
+    type: object
   evgeniyscherbina.cosmosevm.monobank.Params:
     type: object
     description: Params defines the parameters for the module.

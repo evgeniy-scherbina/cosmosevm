@@ -21,6 +21,8 @@ export interface CosmosevmmonobankBalance {
  */
 export type CosmosevmmonobankParams = object;
 
+export type MonobankMsgDepositResponse = object;
+
 export interface MonobankQueryAllBalanceResponse {
   balance?: CosmosevmmonobankBalance[];
 
