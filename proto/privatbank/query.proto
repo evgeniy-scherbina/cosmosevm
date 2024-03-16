@@ -4,7 +4,36 @@ package evgeniyscherbina.cosmosevm.privatbank;
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
+import "privatbank/balance.proto";
 
 option go_package = "github.com/evgeniy-scherbina/cosmosevm/x/privatbank/types";
 
-service Query {}
+service Query {
+  // Queries a Balance by index.
+  rpc Balance(QueryGetBalanceRequest) returns (QueryGetBalanceResponse) {
+    option (google.api.http).get = "/evgeniy-scherbina/cosmosevm/privatbank/balance/{address}";
+  }
+
+  // Queries a list of Balance items.
+  rpc BalanceAll(QueryAllBalanceRequest) returns (QueryAllBalanceResponse) {
+    option (google.api.http).get = "/evgeniy-scherbina/cosmosevm/privatbank/balance";
+  }
+}
+
+message QueryGetBalanceRequest {
+  string address = 1;
+
+}
+
+message QueryGetBalanceResponse {
+  Balance balance = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllBalanceRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllBalanceResponse {
+  repeated Balance balance = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
