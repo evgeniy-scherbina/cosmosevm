@@ -173,6 +173,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		monobankmoduletypes.ModuleName: nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -398,6 +399,7 @@ func New(
 		keys[monobankmoduletypes.StoreKey],
 		keys[monobankmoduletypes.MemStoreKey],
 		app.GetSubspace(monobankmoduletypes.ModuleName),
+		app.BankKeeper,
 	)
 	monobankModule := monobankmodule.NewAppModule(appCodec, app.MonobankKeeper, app.AccountKeeper, app.BankKeeper)
 
