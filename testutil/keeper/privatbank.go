@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"github.com/evgeniy-scherbina/cosmosevm/x/monobank/testutil"
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -17,6 +18,10 @@ import (
 )
 
 func PrivatbankKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+	return PrivatbankKeeperWithMocks(t, nil)
+}
+
+func PrivatbankKeeperWithMocks(t testing.TB, bank *testutil.MockBankEscrowKeeper) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
@@ -33,6 +38,7 @@ func PrivatbankKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		cdc,
 		storeKey,
 		memStoreKey,
+		bank,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
