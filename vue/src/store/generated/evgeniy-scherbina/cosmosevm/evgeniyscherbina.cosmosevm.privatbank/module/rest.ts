@@ -16,6 +16,8 @@ export interface CosmosevmprivatbankBalance {
   balance?: string;
 }
 
+export type PrivatbankMsgDepositResponse = object;
+
 export interface PrivatbankQueryAllBalanceResponse {
   balance?: CosmosevmprivatbankBalance[];
 
