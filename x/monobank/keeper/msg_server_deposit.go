@@ -2,9 +2,10 @@ package keeper
 
 import (
 	"context"
-	"github.com/evgeniy-scherbina/cosmosevm/x/monobank/testutil"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/evgeniy-scherbina/cosmosevm/x/monobank/testutil"
 	"github.com/evgeniy-scherbina/cosmosevm/x/monobank/types"
 )
 

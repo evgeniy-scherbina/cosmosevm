@@ -29,12 +29,12 @@ func TestDepositAPI(t *testing.T) {
 		SendCoinsFromAccountToModule(ctx, aliceAddr, types.ModuleName, testutil.CoinsOf(2)).
 		AnyTimes()
 
-	//bankMock.EXPECT().
-	//	SendCoinsFromModuleToAccount(ctx, types.ModuleName, aliceAddr, testutil.CoinsOf(1)).
-	//	AnyTimes()
-	//bankMock.EXPECT().
-	//	SendCoinsFromModuleToAccount(ctx, types.ModuleName, aliceAddr, testutil.CoinsOf(2)).
-	//	AnyTimes()
+	bankMock.EXPECT().
+		SendCoinsFromModuleToAccount(ctx, types.ModuleName, aliceAddr, testutil.CoinsOf(1)).
+		AnyTimes()
+	bankMock.EXPECT().
+		SendCoinsFromModuleToAccount(ctx, types.ModuleName, aliceAddr, testutil.CoinsOf(2)).
+		AnyTimes()
 
 	// Deposit 1 token
 	{
@@ -62,29 +62,29 @@ func TestDepositAPI(t *testing.T) {
 		require.Equal(t, uint64(3), balance.Balance)
 	}
 
-	//// Withdraw 1 token
-	//{
-	//	_, err = msgServer.Withdraw(goCtx, &types.MsgWithdraw{
-	//		Creator: testutil.Alice,
-	//		Amount:  1,
-	//	})
-	//	require.NoError(t, err)
-	//
-	//	balance, found := k.GetBalance(ctx, testutil.Alice)
-	//	require.True(t, found)
-	//	require.Equal(t, uint64(2), balance.Balance)
-	//}
-	//
-	//// Withdraw 2 more tokens
-	//{
-	//	_, err = msgServer.Withdraw(goCtx, &types.MsgWithdraw{
-	//		Creator: testutil.Alice,
-	//		Amount:  2,
-	//	})
-	//	require.NoError(t, err)
-	//
-	//	balance, found := k.GetBalance(ctx, testutil.Alice)
-	//	require.True(t, found)
-	//	require.Equal(t, uint64(0), balance.Balance)
-	//}
+	// Withdraw 1 token
+	{
+		_, err = msgServer.Withdraw(goCtx, &types.MsgWithdraw{
+			Creator: testutil.Alice,
+			Amount:  1,
+		})
+		require.NoError(t, err)
+
+		balance, found := k.GetBalance(ctx, testutil.Alice)
+		require.True(t, found)
+		require.Equal(t, uint64(2), balance.Balance)
+	}
+
+	// Withdraw 2 more tokens
+	{
+		_, err = msgServer.Withdraw(goCtx, &types.MsgWithdraw{
+			Creator: testutil.Alice,
+			Amount:  2,
+		})
+		require.NoError(t, err)
+
+		balance, found := k.GetBalance(ctx, testutil.Alice)
+		require.True(t, found)
+		require.Equal(t, uint64(0), balance.Balance)
+	}
 }
