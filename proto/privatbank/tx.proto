@@ -5,6 +5,7 @@ option go_package = "github.com/evgeniy-scherbina/cosmosevm/x/privatbank/types";
 
 service Msg {
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
+  rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
 }
 
 message MsgDeposit {
@@ -13,4 +14,12 @@ message MsgDeposit {
 }
 
 message MsgDepositResponse {
+}
+
+message MsgWithdraw {
+  string creator = 1;
+  uint64 amount = 2;
+}
+
+message MsgWithdrawResponse {
 }

@@ -20,6 +20,7 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdDeposit())
+	cmd.AddCommand(CmdWithdraw())
 
 	return cmd
 }
