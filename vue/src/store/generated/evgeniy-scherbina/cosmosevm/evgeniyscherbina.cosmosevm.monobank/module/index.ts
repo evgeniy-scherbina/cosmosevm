@@ -4,10 +4,12 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
+import { MsgWithdraw } from "./types/monobank/tx";
 import { MsgDeposit } from "./types/monobank/tx";
 
 
 const types = [
+  ["/evgeniyscherbina.cosmosevm.monobank.MsgWithdraw", MsgWithdraw],
   ["/evgeniyscherbina.cosmosevm.monobank.MsgDeposit", MsgDeposit],
   
 ];
@@ -41,6 +43,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
+    msgWithdraw: (data: MsgWithdraw): EncodeObject => ({ typeUrl: "/evgeniyscherbina.cosmosevm.monobank.MsgWithdraw", value: MsgWithdraw.fromPartial( data ) }),
     msgDeposit: (data: MsgDeposit): EncodeObject => ({ typeUrl: "/evgeniyscherbina.cosmosevm.monobank.MsgDeposit", value: MsgDeposit.fromPartial( data ) }),
     
   };
