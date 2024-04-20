@@ -3,11 +3,58 @@ package evgeniyscherbina.cosmosevm.evm;
 
 // this line is used by starport scaffolding # proto/tx/import
 
+import "evm/evm.proto";
+import "google/protobuf/any.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
 option go_package = "github.com/evgeniy-scherbina/cosmosevm/x/evm/types";
 
 // Msg defines the Msg service.
 service Msg {
     // this line is used by starport scaffolding # proto/tx/rpc
+
+  // EthereumTx defines a method submitting Ethereum transactions.
+  rpc EthereumTx(MsgEthereumTx) returns (MsgEthereumTxResponse) {
+    option (google.api.http).post = "/ethermint/evm/v1/ethereum_tx";
+  };
+}
+
+// MsgEthereumTx encapsulates an Ethereum transaction as an SDK message.
+message MsgEthereumTx {
+  option (gogoproto.goproto_getters) = false;
+
+  // data is inner transaction data of the Ethereum transaction
+  google.protobuf.Any data = 1;
+
+  // size is the encoded storage size of the transaction (DEPRECATED)
+  double size = 2 [(gogoproto.jsontag) = "-"];
+  // hash of the transaction in hex format
+  string hash = 3 [(gogoproto.moretags) = "rlp:\"-\""];
+  // from is the ethereum signer address in hex format. This address value is checked
+  // against the address derived from the signature (V, R, S) using the
+  // secp256k1 elliptic curve
+  string from = 4;
+}
+
+// MsgEthereumTxResponse defines the Msg/EthereumTx response type.
+message MsgEthereumTxResponse {
+  option (gogoproto.goproto_getters) = false;
+
+  // hash of the ethereum transaction in hex format. This hash differs from the
+  // Tendermint sha256 hash of the transaction bytes. See
+  // https://github.com/tendermint/tendermint/issues/6539 for reference
+  string hash = 1;
+  // logs contains the transaction hash and the proto-compatible ethereum
+  // logs.
+  repeated Log logs = 2;
+  // ret is the returned data from evm function (result or data supplied with revert
+  // opcode)
+  bytes ret = 3;
+  // vm_error is the error returned by vm execution
+  string vm_error = 4;
+  // gas_used specifies how much gas was consumed by the transaction
+  uint64 gas_used = 5;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
