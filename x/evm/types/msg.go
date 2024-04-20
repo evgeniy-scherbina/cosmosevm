@@ -4,6 +4,7 @@ import (
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 )
 
 const TypeMsgEthereumTx = "ethereum_tx"
@@ -46,4 +47,14 @@ func (msg *MsgEthereumTx) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 	return nil
+}
+
+// AsTransaction creates an Ethereum Transaction type from the msg fields
+func (msg MsgEthereumTx) AsTransaction() *ethtypes.Transaction {
+	txData, err := UnpackTxData(msg.Data)
+	if err != nil {
+		return nil
+	}
+
+	return ethtypes.NewTx(txData.AsEthereumData())
 }
