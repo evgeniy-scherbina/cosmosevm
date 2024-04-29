@@ -1,0 +1,14 @@
+syntax = "proto3";
+package evgeniyscherbina.cosmosevm.precompile;
+
+import "gogoproto/gogo.proto";
+import "precompile/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/evgeniy-scherbina/cosmosevm/x/precompile/types";
+
+// GenesisState defines the precompile module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

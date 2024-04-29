@@ -105,6 +105,9 @@ import (
 	monobankmodule "github.com/evgeniy-scherbina/cosmosevm/x/monobank"
 	monobankmodulekeeper "github.com/evgeniy-scherbina/cosmosevm/x/monobank/keeper"
 	monobankmoduletypes "github.com/evgeniy-scherbina/cosmosevm/x/monobank/types"
+	precompilemodule "github.com/evgeniy-scherbina/cosmosevm/x/precompile"
+	precompilemodulekeeper "github.com/evgeniy-scherbina/cosmosevm/x/precompile/keeper"
+	precompilemoduletypes "github.com/evgeniy-scherbina/cosmosevm/x/precompile/types"
 	privatbankmodule "github.com/evgeniy-scherbina/cosmosevm/x/privatbank"
 	privatbankmodulekeeper "github.com/evgeniy-scherbina/cosmosevm/x/privatbank/keeper"
 	privatbankmoduletypes "github.com/evgeniy-scherbina/cosmosevm/x/privatbank/types"
@@ -165,6 +168,7 @@ var (
 		monobankmodule.AppModuleBasic{},
 		privatbankmodule.AppModuleBasic{},
 		evmmodule.AppModuleBasic{},
+		precompilemodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -243,6 +247,8 @@ type App struct {
 	PrivatbankKeeper privatbankmodulekeeper.Keeper
 
 	EvmKeeper evmmodulekeeper.Keeper
+
+	PrecompileKeeper precompilemodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -281,6 +287,7 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		monobankmoduletypes.StoreKey, privatbankmoduletypes.StoreKey,
 		evmmoduletypes.StoreKey,
+		precompilemoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -427,6 +434,14 @@ func New(
 	)
 	evmModule := evmmodule.NewAppModule(appCodec, app.EvmKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.PrecompileKeeper = *precompilemodulekeeper.NewKeeper(
+		appCodec,
+		keys[precompilemoduletypes.StoreKey],
+		keys[precompilemoduletypes.MemStoreKey],
+		app.GetSubspace(precompilemoduletypes.ModuleName),
+	)
+	precompileModule := precompilemodule.NewAppModule(appCodec, app.PrecompileKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -471,6 +486,7 @@ func New(
 		monobankModule,
 		privatbankModule,
 		evmModule,
+		precompileModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -501,6 +517,7 @@ func New(
 		monobankmoduletypes.ModuleName,
 		privatbankmoduletypes.ModuleName,
 		evmmoduletypes.ModuleName,
+		precompilemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -527,6 +544,7 @@ func New(
 		monobankmoduletypes.ModuleName,
 		privatbankmoduletypes.ModuleName,
 		evmmoduletypes.ModuleName,
+		precompilemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -558,6 +576,7 @@ func New(
 		monobankmoduletypes.ModuleName,
 		privatbankmoduletypes.ModuleName,
 		evmmoduletypes.ModuleName,
+		precompilemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -585,6 +604,7 @@ func New(
 		monobankModule,
 		privatbankModule,
 		evmModule,
+		precompileModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -777,6 +797,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(monobankmoduletypes.ModuleName)
 	paramsKeeper.Subspace(privatbankmoduletypes.ModuleName)
 	paramsKeeper.Subspace(evmmoduletypes.ModuleName)
+	paramsKeeper.Subspace(precompilemoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

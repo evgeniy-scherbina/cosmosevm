@@ -22,6 +22,7 @@ import CosmosIbcGoIbcCoreConnectionV1 from './cosmos/ibc-go/ibc.core.connection.
 import CosmosIbcGoIbcCorePortV1 from './cosmos/ibc-go/ibc.core.port.v1'
 import EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmEvm from './evgeniy-scherbina/cosmosevm/evgeniyscherbina.cosmosevm.evm'
 import EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmMonobank from './evgeniy-scherbina/cosmosevm/evgeniyscherbina.cosmosevm.monobank'
+import EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmPrecompile from './evgeniy-scherbina/cosmosevm/evgeniyscherbina.cosmosevm.precompile'
 import EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmPrivatbank from './evgeniy-scherbina/cosmosevm/evgeniyscherbina.cosmosevm.privatbank'
 
 
@@ -48,6 +49,7 @@ export default {
   CosmosIbcGoIbcCorePortV1: load(CosmosIbcGoIbcCorePortV1, 'ibc.core.port.v1'),
   EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmEvm: load(EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmEvm, 'evgeniyscherbina.cosmosevm.evm'),
   EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmMonobank: load(EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmMonobank, 'evgeniyscherbina.cosmosevm.monobank'),
+  EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmPrecompile: load(EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmPrecompile, 'evgeniyscherbina.cosmosevm.precompile'),
   EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmPrivatbank: load(EvgeniyScherbinaCosmosevmEvgeniyscherbinaCosmosevmPrivatbank, 'evgeniyscherbina.cosmosevm.privatbank'),
   
 }
